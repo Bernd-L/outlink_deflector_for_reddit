@@ -1,25 +1,32 @@
 package pw.bernd.outlink_deflector_for_reddit
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import android.widget.Toast.LENGTH_SHORT
 import androidx.appcompat.app.AppCompatActivity
 
-
-const val TAG = "deflector_dbg";
-
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        setContentView(R.layout.activity_main)
 
-        val data = intent.data
-        val urlString = data.toString()
-        Log.e(TAG, urlString)
+        // Extract the (actual) target URL from the incoming intent
+        val targetUrl = intent.data?.getQueryParameter("url")
 
+        // Check for errors
+        if (targetUrl == null) {
+            Toast.makeText(applicationContext, "Couldn't extract target URL", LENGTH_SHORT).show()
+            return
+        }
 
-        Toast.makeText(applicationContext, "Got whole URL: $urlString", LENGTH_SHORT).show()
-//        exitProcess(0)
+        try {
+            // Launch the actual browser
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(targetUrl)))
+        } catch (_: Throwable) {
+            Toast.makeText(applicationContext, "Couldn't parse: $targetUrl", LENGTH_SHORT).show()
+        }
+
+        finish()
     }
 }

@@ -7,7 +7,9 @@ Essentially, it registers itself as a handler for `out.reddit.com`, extracts the
 from the `https://out.reddit.com/...` URL and prompts Android to open it, as if the user had clicked
 on the link directly.
 
-Work in progress.
+This app does not make any network requests; it does not even have networking permissions.
+
+Tested & works on Android 11.
 
 ## Third-party notice
 
